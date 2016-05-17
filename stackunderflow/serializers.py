@@ -3,6 +3,8 @@ from .models import Question, Answer
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    creator = serializers.ReadOnlyField(source='creator.username')
+
     class Meta:
         model = Question
         fields = ('text', 'creator', 'title', 'created', 'views', 'answers')

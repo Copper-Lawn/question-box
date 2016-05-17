@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import Question, Answer
-from .serializers import QuestionSerializer, AnswerSerializer
+from .models import Question
+from .serializers import QuestionSerializer
 
 
 class QuestionList(generics.ListCreateAPIView):
