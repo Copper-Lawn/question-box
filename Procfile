@@ -1,0 +1,1 @@
+web: gunicorn questionbox_project.wsgi --log-file -
