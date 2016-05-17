@@ -4,16 +4,12 @@ from rest_framework import routers
 from stackunderflow import views
 
 router = routers.DefaultRouter()
-# router.register(r'api/questions', views.QuestionsViewSet)
-# router.register(r'api/answers', views.AnswersViewSet)
+router.register(r'api/questions', views.QuestionsViewSet)
+router.register(r'api/answers', views.AnswersViewSet)
 
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-
-    url(r'^api/questions/$', views.QuestionList.as_view()),
-    url(r'^api/questions/(?P<pk>[0-9]+)/$', views.QuestionDetail.as_view()),
-
     url(r'^admin/', include(admin.site.urls)),
 
 ]

@@ -1,9 +1,9 @@
-from rest_framework import generics
-from .models import Question
-from .serializers import QuestionSerializer
+from rest_framework import viewsets
+from .models import Question, Answer
+from .serializers import QuestionSerializer, AnswerSerializer
 
 
-class QuestionList(generics.ListCreateAPIView):
+class QuestionsViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 
@@ -11,6 +11,9 @@ class QuestionList(generics.ListCreateAPIView):
         serializer.save(creator=self.request.user)
 
 
-class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Question.objects.all()
-    serializer_class = QuestionSerializer
+class AnswersViewSet(viewsets.ModelViewSet):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)

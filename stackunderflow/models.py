@@ -13,6 +13,6 @@ class Question(models.Model):
 
 class Answer(models.Model):
     text = models.TextField()
-    creator = models.ForeignKey(User)
+    creator = models.ForeignKey(User, editable=False)
     score = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
