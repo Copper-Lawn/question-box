@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Question(models.Model):
     text = models.TextField()
-    creator = models.ForeignKey(User)
+    creator = models.ForeignKey(User, editable=False)
     title = models.CharField(max_length=200)
     created = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0)

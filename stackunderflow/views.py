@@ -8,7 +8,6 @@ class QuestionList(generics.ListCreateAPIView):
     serializer_class = QuestionSerializer
 
     def perform_create(self, serializer):
-        print("Trying to set user :( :", self.request.user.id)
         serializer.save(creator=self.request.user)
 
 
