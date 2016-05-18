@@ -14,23 +14,13 @@ import dj_database_url
 # from .secrets import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "3hm09tv=wuj0#a-8ccam+r)nb7xm(3_yb1j_rclm11xk9+4*o@"
+SECRET_KEY = os.environ.get(SECRET_KEY)
 
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'questionbox',
-        'USERNAME': 'Cameron',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
-
-    }
-}
+DATABASES = os.environment.get(DATABASES)
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
