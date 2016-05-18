@@ -4,3 +4,8 @@ djangorestframework==3.3.3
 gunicorn==19.4.5
 psycopg2==2.6.1
 whitenoise==2.0.6
+
+
+WEB_CONCURRENCY=2
+SECRET_KEY="3hm09tv=wuj0#a-8ccam+r)nb7xm(3_yb1j_rclm11xk9+4*o@"
+DATABASE_URL="postgres://Oakes@127.0.0.1:5432/questionbox"

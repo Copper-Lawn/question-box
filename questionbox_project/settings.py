@@ -2,7 +2,12 @@ import os
 import dj_database_url
 # from .secrets import *
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
 SECRET_KEY = os.environ.get('SECRET_KEY')
+
 
 DATABASES = {
     'default': {
@@ -14,6 +19,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = True
+
+
+DATABASES = {
+    'default': {}
+}
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+
+# Application definition
+
 
 INSTALLED_APPS = (
     'stackunderflow.apps.StackunderflowConfig',
@@ -94,6 +111,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
