@@ -7,3 +7,4 @@ secrets.py
 *.pyc
 db.sqlite3
 .ipynb_checkpoints
+.env
