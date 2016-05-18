@@ -1,3 +1,6 @@
-venv
+.DS_Store
+.envrc
+.direnv
+__pycache__
 *.pyc
-staticfiles
+.ipynb_checkpoints
