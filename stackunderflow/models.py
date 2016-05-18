@@ -9,6 +9,7 @@ class Question(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0)
     answers = models.ForeignKey('Answer', on_delete=models.CASCADE, null=True)
+    keywords = models.CharField(max_length=250)
 
 
 class Answer(models.Model):
