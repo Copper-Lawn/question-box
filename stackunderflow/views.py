@@ -19,6 +19,5 @@ class AnswersViewSet(viewsets.ModelViewSet):
         serializer.save(creator=self.request.user)
 
 
-
 class SuckItRyan(viewsets.RyanAPIView):
     queryset = Ryan.objects.all()
