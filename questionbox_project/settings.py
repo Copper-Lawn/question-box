@@ -23,7 +23,6 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -76,7 +75,6 @@ TEMPLATES = (
 )
 
 WSGI_APPLICATION = 'questionbox_project.wsgi.application'
-
 
 AUTH_PASSWORD_VALIDATORS = (
     {
