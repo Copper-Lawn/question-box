@@ -17,3 +17,7 @@ class AnswersViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
+
+
+class SuckItRyan(viewsets.RyanAPIView):
+    queryset = Ryan.objects.all()
