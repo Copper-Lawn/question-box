@@ -17,8 +17,4 @@ class AnswersViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
-
-class FuckOffAllYall(mah_dick):
-    def __suck_it__(self,for, real):
-        stfu = []
-        return stfu
+    
