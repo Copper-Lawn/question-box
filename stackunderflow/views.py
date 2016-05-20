@@ -20,7 +20,7 @@ class CreateAccountView(TemplateView):
 
 
 class ProfileView(TemplateView):
-    template_name = "stackunderflow/home.html"
+    template_name = "stackunderflow/profile.html"
 
 
 """ API Endpoint views """
