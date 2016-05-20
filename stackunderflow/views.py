@@ -5,7 +5,6 @@ from django.views.generic.base import TemplateView
 from django.contrib.auth.models import User
 
 
-
 """ User views """
 
 
@@ -22,7 +21,6 @@ class QuestionsPageView(TemplateView):
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
-
 
     def get_queryset(self):
         order_by = self.request.GET.get('sort', 'title')
@@ -49,7 +47,6 @@ class ProfileView(TemplateView):
 
 
 """ API Endpoint views """
-
 
 
 class QuestionsViewSet(viewsets.ModelViewSet):
