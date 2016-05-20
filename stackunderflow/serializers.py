@@ -1,14 +1,21 @@
 from rest_framework import serializers
-from .models import Question, Answer
+from .models import Question, Answer, Keyword
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Question
-        fields = ('text', 'creator', 'title', 'created', 'views', 'answers')
+        fields = ('id', 'text', 'title', 'created', 'views', 'keywords')
 
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ('text', 'creator', 'score', 'created')
+        fields = ('text',)
+
+
+class KeywordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Keyword
+        fields = ('keyword',)
