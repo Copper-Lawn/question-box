@@ -17,3 +17,8 @@ class Answer(models.Model):
     creator = models.ForeignKey(User, editable=False)
     score = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
+
+# class Creator(models.Model):
+#     user_score = models.IntegerField(default=0)
+#     answer_score = models.IntegerField(default=0)
+#     user = models.ForeignKey(users)#I don't know what goes in here

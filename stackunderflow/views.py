@@ -17,3 +17,13 @@ class AnswersViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
+
+
+
+
+
+from django.views.generic.base import TemplateView
+
+
+class ProfileView(TemplateView):
+    template_name = "stackunderflow/profile.html"

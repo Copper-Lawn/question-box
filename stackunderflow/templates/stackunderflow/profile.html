@@ -1,0 +1,578 @@
+<div class="container">
+        <div id="content" class="snippet-hidden">
+<div class="message error centered-block text-centered hidden-important hero-error">
+    An unexpected error occurred, please try again.
+</div>
+
+<div class="hero-box profile">
+
+    <div class="hero-close">× not right now</div>
+
+    <div class="hero-content">
+
+        <div class="step step_2 hidden">
+
+            <div class="step_img"></div>
+
+
+
+            <div class="step_content">
+                <h2 class="hero-title">Pick a few tags that interest you.</h2>
+                <p>Picking tags will help us show you much more relevant questions and answers.</p>
+                <div class="step_form">
+                    <input type="text" name="FavTags" id="fav-tags" placeholder="e.g. Javascript, java, c#, php, jquery, python, android, ios..." class="input-step">
+                </div>
+
+                <a href="#" class="cta btn-outlined white btn-step">Continue</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="hero-notice">
+        All fields are optional
+    </div>
+</div>
+<script>
+    // Hero steps
+    (function(){
+        var heroBox = {
+            submitting: false,
+            options: {
+                currentStep: 1
+            },
+
+            init: function() {
+                this.attachEvents();
+
+                this.$el = $('.hero-box');
+                this.$steps = this.$el.find('.step');
+            },
+
+            attachEvents: function() {
+                var _this = this;
+
+                $('.btn-step').on('click', function(e) {
+                    e.preventDefault();
+
+                    _this.nextStep();
+                });
+
+                $('.hero-close').on('click', function(e) {
+                    e.preventDefault();
+
+                    _this.closeHero(true);
+                });
+            },
+
+            nextStep: function () {
+                var shouldUpdateStep = this.ajaxRequestPerStep(this.options.currentStep);
+                if (shouldUpdateStep) {
+                    this.updateStep();
+                }
+            },
+
+            updateStep:function() {
+                this.options.currentStep++;
+
+                // unless it's the last step
+                if (this.options.currentStep <= 4) {
+                    this.handleSpecialStep(this.options.currentStep);
+
+                    $(this.$steps[this.options.currentStep - 1]).siblings().hide().end().show();
+                } else {
+                    this.closeHero();
+                }
+            },
+
+            ajaxRequestPerStep: function (step) {
+                if (step === 1) {
+                    return true;
+                }
+
+                var _this = this;
+                var url = "", data = { 'fkey': StackExchange.options.user.fkey };
+
+                if (step === 3) {
+                    url = "/users/profile/update-favtags";
+                var tags = $('#fav-tags').val();
+                if (!_this.tagsRemoved && !tags) {
+                    return true;
+                }
+
+                data['tags'] = _this.appendToExistingTags(tags);
+            } else if (step === 2) {
+                url = "/users/profile/update-workhistory";
+                data.workHistory = {};
+
+                var userWorkHistoryType = $('.type-dev:checked').val();
+                if (!userWorkHistoryType) return true;
+
+                data.workHistory.UserWorkHistoryTypeId = userWorkHistoryType;
+
+                if (userWorkHistoryType === 'Work') {
+                    data.workHistory.Role = $('#WorkRole').val();
+                    data.workHistory.Organization = $('#WorkOrganization').val();
+                } else if (userWorkHistoryType === 'School') {
+                    data.workHistory.Role = $('#SchoolRole').val();
+                    data.workHistory.Organization = $('#SchoolOrganization').val();
+                } else if (userWorkHistoryType === 'Other') {
+                    data.workHistory.Description = $('#OtherDescription').val();
+                }
+            } else if (step === 4) {
+                url = "/users/profile/update-jobactivity";
+                var jobSearchStatus = $('input[name="CareersSearchStatus"]:checked').val();
+                if (!jobSearchStatus) {
+                    return true;
+                }
+
+                data.jobSearchStatus = jobSearchStatus;
+            }
+
+            if (!_this.submitting) {
+                _this.submitting = true;
+                $('.btn-step').addClass('disabled');
+                StackExchange.helpers.addSpinner($('.btn-step'));
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    dataType: 'json',
+                    data: data,
+                    success: function () {
+                        _this.displayError(false);
+                        // Update step
+                        _this.options.currentStep++;
+
+                        if (_this.options.currentStep <= 4) {
+                            _this.handleSpecialStep(_this.options.currentStep);
+
+                            $(_this.$steps[_this.options.currentStep - 1]).siblings().hide().end().show();
+                        } else {
+                            _this.closeHero();
+                        }
+                    },
+                    error: function () {
+                        _this.displayError(true);
+                    },
+                    complete: function () {
+                        _this.submitting = false;
+                        $('.btn-step').removeClass('disabled');
+                        StackExchange.helpers.removeSpinner();
+                    }
+                });
+            }
+
+            return false;
+            },
+
+            appendToExistingTags: function (tags) {
+                var existing = $('#interestingTags .post-tag').map(function (i, v) { return $(v).text(); }).get();
+                existing.push(tags);
+
+                return existing.join(' ');
+            },
+
+            displayError: function(state) {
+                var $error = $('.hero-error');
+
+                // Display it
+                if( state )
+                {
+                    $error.removeClass('hidden-important');
+                }
+                    // Hide it
+                else
+                {
+                    $error.addClass('hidden-important');
+                }
+            },
+
+            handleSpecialStep: function(step) {
+                if(step === 3) {
+                    StackExchange.using("tagEditor", function () {
+                        initTagRenderer("".split(" "), "".split(" "));
+                        StackExchange.tagEditor($("#fav-tags"), undefined, undefined, { suggestionsWidth: 480 });
+                    });
+
+                    $('#interestingTags').find('.post-tag')
+                        .addClass('user-tag'); // prevent magic popups on tags
+                }
+            },
+
+            closeHero: function (later) {
+                this.$el.remove();
+
+                var currStep = this.options.currentStep;
+
+                StackExchange.using("gps", function () {
+                    StackExchange.gps.track('profile_integration_hero.close', { step: currStep });
+                });
+
+                if( later ) {
+                    $('.hero-later').removeClass('hidden-important');
+                } else {
+                    $('.hero-success').removeClass('hidden-important');
+                }
+
+                this.dismissHero();
+            },
+
+            dismissHero: function () {
+                var _this = this;
+
+                _this.submitting = true;
+                $.ajax({
+                    type: 'POST',
+                    url: '/users/profile/dismiss-hero',
+                    dataType: 'json',
+                    data: { 'fkey': StackExchange.options.user.fkey },
+                    success: function () {
+                        _this.submitting = false;
+                    },
+                    error: function () {
+                        _this.displayError(true);
+                        _this.submitting = false;
+                    }
+                });
+            }
+            };
+
+            heroBox.init();
+
+            $('.type-dev').on('click', function (e) {
+                var type = this.getAttribute('id');
+                var typeArea = enableWorkInputArea(type);
+                if (typeArea) {
+                    typeArea
+                        .removeClass('disabled-area')
+                        .find('input[type="text"]')
+                        .removeAttr("disabled").first().focus();
+                }
+            });
+
+            var enableWorkInputArea = function (devType) {
+                var typeArea = $('.' + devType + '-area');
+                if (typeArea) {
+                    if (!typeArea.is(':visible')) {
+                        typeArea
+                            .removeClass('hidden')
+                            .siblings('.input-area').addClass('hidden');
+                    }
+                }
+                return typeArea;
+            };
+
+            enableWorkInputArea($('.type-dev[checked]').attr('id'));
+
+            var $typeCareersMsg = $('.careers-email');
+            $('.type-careers').on('click', function(e) {
+                $typeCareersMsg.show();
+            });
+
+            $(".type-careers-not").on('click', function(e) {
+                $typeCareersMsg.hide();
+            });
+
+            $('.delete-tag').on('click', function (e) {
+                var tag = $(this).closest('.post-tag');
+                tag.remove();
+                heroBox.tagsRemoved = true;
+            });
+            $('.post-tag').css('cursor', 'default');
+    })();
+
+</script>
+
+<div id="mainbar-full" class="user-show-new">
+
+<div class="subheader reloaded js-user-header" style="box-sizing: content-box;">
+    <div id="tabs">
+        <a href="/users/6152217/scott-rob?tab=profile">Profile</a>
+        <a href="/users/6152217/scott-rob?tab=topactivity" class="youarehere">Activity</a>
+                                <a href="/users/edit/6152217">Edit Profile &amp; Settings</a>
+                        <a href="/jobs/cv/create" class="external"><span class="-icon"></span> Create CV</a>
+    </div>
+
+<div class="mini-avatar">
+    <div class="name">
+        Scott Rob
+    </div>
+    <div class="user-gravatar-mini">
+        <a href="/users/6152217/scott-rob"><div class="gravatar-wrapper-32"><img src="https://graph.facebook.com/10205125473531292/picture?type=large" alt="" width="32" height="32"></div></a>
+    </div>
+</div>    <div class="additional-links">
+
+
+
+                    <a href="http://stackexchange.com/users/8172142/scott-rob">
+                <div class="favicon favicon-stackexchange" title="stack exchange network profile"></div>
+                Network Profile
+            </a>
+
+    </div>
+</div>
+
+
+
+    <div id="top-cards" class="row">
+
+    <div class="col-5 card rep-card default">
+        <div class="icon"></div>
+        <h4>Reputation is how the community thanks you</h4>
+        <p>
+            When users upvote your helpful posts, you'll earn reputation and unlock new privileges.
+        </p>
+        <p class="links">
+            Learn more about <a href="/help/whats-reputation">reputation</a> and <a href="/help/privileges">privileges</a>
+        </p>
+    </div>
+
+
+
+
+
+
+    <div class="col-5 card badges-card default">
+        <div class="icon"></div>
+        <h4>Earn badges for helpful actions</h4>
+        <p>
+            Badges are bits of digital flair that you get when you participate in especially helpful ways.
+        </p>
+        <a href="/tour" class="button">Take the Tour and earn your first badge</a>
+    </div>
+
+
+    <div class="col-2 card impact-card default">
+        <div class="icon"></div>
+        <h4>Measure your impact</h4>
+        <p>
+            Your posts and helpful actions here help hundreds or thousands of people searching for help.
+        </p>
+    </div>
+
+    </div>
+    <div class="subheader user-tabs-nav reloaded">
+        <div class="tabs">
+                <a class="youarehere" href="/users/6152217/scott-rob?tab=summary" title="your overall summary">
+                    summary
+                    </a>
+                <a href="/users/6152217/scott-rob?tab=answers" title="answers you provided">
+                    answers
+                    </a>
+                <a href="/users/6152217/scott-rob?tab=questions" title="questions you asked">
+                    questions
+                    </a>
+                <a href="/users/6152217/scott-rob?tab=votes" title="votes you have cast">
+                    votes
+                    </a>
+    </div>
+</div>
+
+
+<div>
+<div id="user-panel-answers" class="user-panel user-panel-left">
+    <div class="subheader">
+            <h3 class="title-section no-border"><a href="/users/6152217/scott-rob?tab=answers">
+    Answers <span>(0)</span>
+</a></h3>
+            <div class="subtabs user-panel-subtabs">
+            <a href="javascript:void(0)" class="youarehere" data-sort-id="votes">
+               votes
+            </a>
+            <a href="javascript:void(0)" data-sort-id="activity">
+               activity
+            </a>
+            <a href="javascript:void(0)" data-sort-id="newest">
+               newest
+            </a>
+        </div>
+    </div>
+
+    <div class="user-panel-content">
+
+        <div class="empty">You have not <a href="/questions/how-to-answer">answered</a> any questions</div>
+
+    </div>
+
+    <div class="user-panel-footer">
+
+    </div>
+</div><div id="user-panel-reputation" class="user-panel">
+    <div class="subheader">
+            <h3 class="title-section no-border"><a href="/users/6152217/scott-rob?tab=reputation">
+    Reputation <span>(1)</span>
+</a></h3>
+
+        </div>
+
+    <div class="user-panel-content">
+
+
+
+        <div class="empty">
+You have no recent <a href="/help/whats-reputation">reputation changes</a>        </div>
+
+    </div>
+
+    <div class="user-panel-footer">
+
+    </div>
+</div><div id="user-panel-questions" class="user-panel user-panel-left">
+    <div class="subheader">
+            <h3 class="title-section no-border"><a href="/users/6152217/scott-rob?tab=questions">
+    Questions <span>(0)</span>
+</a></h3>
+            <div class="subtabs user-panel-subtabs">
+            <a href="javascript:void(0)" class="youarehere" data-sort-id="votes">
+               votes
+            </a>
+            <a href="javascript:void(0)" data-sort-id="activity">
+               activity
+            </a>
+            <a href="javascript:void(0)" data-sort-id="newest">
+               newest
+            </a>
+        </div>
+    </div>
+
+    <div class="user-panel-content">
+
+        <div class="empty">You have not <a href="/questions/how-to-ask">asked</a> any questions</div>
+
+    </div>
+
+    <div class="user-panel-footer">
+
+    </div>
+</div><div id="user-panel-tags" class="user-panel">
+    <div class="subheader">
+            <h3 class="title-section no-border"><a href="/users/6152217/scott-rob?tab=tags">
+    Tags <span>(0)</span>
+</a></h3>
+        </div>
+
+    <div class="user-panel-content">
+
+        <div class="empty">You have not participated in any <a href="/tags">tags</a></div>
+
+    </div>
+
+    <div class="user-panel-footer">
+
+    </div>
+</div><div id="user-panel-accounts" class="user-panel user-panel-left">
+    <div class="subheader">
+            <h3 class="title-section no-border"><a href="http://stackexchange.com/users/8172142/scott-rob?tab=accounts">
+    Account <span>(1)</span>
+</a></h3>
+        </div>
+
+    <div class="user-panel-content">
+
+        <table class="user-accounts lines">
+            <tbody>
+                <tr>
+                    <td class="icon-cell">
+                        <div class="favicon favicon favicon-stackoverflow" title="Stack Overflow"></div>
+                    </td>
+                    <td>
+                        <a class="site-hyperlink" href="http://stackoverflow.com/users/6152217/">Stack Overflow</a>
+                    </td>
+                    <td class="reputation">
+                        <span class="reputation-score">1</span> rep
+                    </td>
+                    <td class="badges">
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="user-panel-footer">
+
+    </div>
+</div><div id="user-panel-badges" class="user-panel">
+    <div class="subheader">
+            <h3 class="title-section no-border"><a href="/users/6152217/scott-rob?tab=badges">
+  Badges <span>(0)</span>
+</a></h3>
+            <div class="subtabs user-panel-subtabs">
+            <a href="javascript:void(0)" class="youarehere" data-sort-id="recent">
+               recent
+            </a>
+            <a href="javascript:void(0)" data-sort-id="class">
+               class
+            </a>
+            <a href="javascript:void(0)" data-sort-id="name">
+               name
+            </a>
+        </div>
+    </div>
+
+    <div class="user-panel-content">
+
+        <div class="empty">You have not earned any <a href="/help/badges">badges</a></div>
+
+    </div>
+
+    <div class="user-panel-footer">
+
+    </div>
+</div><div id="user-panel-bounties" class="user-panel user-panel-left">
+    <div class="subheader">
+            <h3 class="title-section no-border"><a href="/users/6152217/scott-rob?tab=bounties">
+Active bounties <span>(0)</span></a></h3>
+            <div class="subtabs user-panel-subtabs">
+            <a href="javascript:void(0)" class="youarehere" data-sort-id="active">
+               active
+            </a>
+            <a href="javascript:void(0)" data-sort-id="offered">
+               offered
+            </a>
+            <a href="javascript:void(0)" data-sort-id="earned">
+               earned
+            </a>
+        </div>
+    </div>
+
+    <div class="user-panel-content">
+
+You have no active <a href="/help/bounty">bounties</a>
+    </div>
+
+    <div class="user-panel-footer">
+
+    </div>
+</div><div id="user-panel-votes" class="user-panel">
+    <div class="subheader">
+        <h3 class="title-section no-border">
+    Votes Cast <span>(0)</span>
+</h3>
+        </div>
+
+    <div class="user-panel-content">
+
+        <div class="empty">You have not cast any <a href="/help/why-vote">votes</a></div>
+
+    </div>
+
+    <div class="user-panel-footer">
+
+    </div>
+</div></div>
+
+
+<div id="feed-link">
+    <div id="feed-link-text">
+        <a href="/feeds/user/6152217" title="feed of the 30 latest questions, answers, and comments from this user">
+            <span class="feed-icon"></span>user feed
+        </a>
+    </div>
+</div></div>
+
+
+        </div>
+    </div>
