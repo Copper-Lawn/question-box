@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions, renderers
 from .models import Question, Answer, Keyword
 from .serializers import QuestionSerializer, AnswerSerializer, KeywordSerializer
 from django.views.generic.base import TemplateView
@@ -11,8 +11,25 @@ class HomeView(TemplateView):
     template_name = "stackunderflow/home.html"
 
 
-class QuestionDetailView(TemplateView):
-    template_name = "stackunderflow/home.html"
+class QuestionsPageView(TemplateView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    renderer_classes = (renderers.TemplateHTMLRenderer,)
+    template_name = 'stackunderflow/question.html'
+
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)
+
+
+    def get_queryset(self):
+        order_by = self.request.GET.get('sort', 'title')
+        return Question.objects.all().order_by(order_by)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['given_question'] = Question.objects.filter(id=kwargs['pk'])
+        return context
 
 
 class CreateAccountView(TemplateView):
@@ -26,16 +43,13 @@ class ProfileView(TemplateView):
 """ API Endpoint views """
 
 
+
 class QuestionsViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
-
-    def get_queryset(self):
-        order_by = self.request.GET.get('sort', 'title')
-        return Question.objects.all().order_by(order_by)
 
 
 class AnswersViewSet(viewsets.ModelViewSet):
