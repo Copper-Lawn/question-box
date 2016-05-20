@@ -1,0 +1,87 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'stackunderflow/style.css' %}" />
+    </head>
+
+    <body>
+      <header>
+
+        <div class="nav">
+          <ul>
+            <li class="home"><a class="active" href="#">Home</a></li>
+            {% if is_authenticated %}
+            <li class="account"><a href="/account/profile/">Account</a></li>
+            {% else %}
+            <li class="login"><a href="#">Login/Register</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+      </header>
+
+        <h1>Login</h1>
+
+      <div id="div_user_login">
+        <form id="user_login" action="" method="post">
+
+          <label for="username">Username</label>
+          <input type="text" name="username" value="">
+          </br>
+          </br>
+
+          <label for="password">Password</label>
+          <input type="text" name="password" value="">
+          </br>
+          </br>
+
+        </form>
+
+      </div>
+
+      <script>
+        var users_list = [
+          {% for user in users_list %}
+          {name: '{{ user.username }}' }
+          {% endfor %}
+        ];
+      </script>
+
+        <h1>Create New Account</h1>
+
+
+
+      <div id="div_user_form">
+        <form id="user_form" method="post" action="">
+          <!-- <legend>Create New Profile</legend> -->
+
+          <label for="username">Username</label>
+          <input type="text" name="username" value="">
+          </br>
+          </br>
+
+          <label for="password">Password</label>
+          <input type="text" name="password" value="">
+          </br>
+          </br>
+
+          <label for="email">Email</label>
+          <input type="text" name="email" value="">
+          </br>
+          </br>
+
+
+            <!-- {{ user_form.as_p }} -->
+
+            <!-- Provide a button to click to submit the form. -->
+            <input type="submit" name="submit" value="Register" />
+        </form>
+      </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <script src="/static/register.js"></script>
+    </body>
+</html>
