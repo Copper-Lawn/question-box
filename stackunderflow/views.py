@@ -2,6 +2,8 @@ from rest_framework import viewsets
 from .models import Question, Answer, Keyword
 from .serializers import QuestionSerializer, AnswerSerializer, KeywordSerializer
 from django.views.generic.base import TemplateView
+from django.contrib.auth.models import User
+
 
 
 """ User views """
@@ -16,7 +18,13 @@ class QuestionDetailView(TemplateView):
 
 
 class CreateAccountView(TemplateView):
-    template_name = "stackunderflow/home.html"
+    template_name = "stackunderflow/register.html"
+    # queryset = User.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['users_list'] = User.objects.all()
+        return context
 
 
 class ProfileView(TemplateView):
