@@ -1,3 +1,8 @@
+var $sorter = $('#sorter')
+var $sort = $('#sort')
+var $questions = $('#questions')
+var question_list = $.get('/api/questions/')
+
 var add_to_list = function(question) {
     var $summary = $("<div class=summary>");
     $summary.appendTo($('#questionsList'));
@@ -9,8 +14,8 @@ var add_to_list = function(question) {
     questionLink.appendTo($questionSummary)
     $("<div class=questionText>").text(question.text.slice(0, 50) + "...").appendTo($questionSummary);
     displayKeywords(question, $questionSummary);
-
 }
+
 
 function displayKeywords(question, $questionSummary) {
     console.log("keywords:" + question.keywords)
@@ -26,21 +31,14 @@ function displayKeywords(question, $questionSummary) {
 }
 
 
-var $sort = $('#sort')
-var $questions = $('#questions')
-
-var question_list = $.get('/api/questions/')
-
 function getQuestions() {
     $.get('/api/questions/', {'sort': $sort.val()}, function(questions) {
         $('#questionsList').remove();
-        // var $div = $('<div id="questions">').appendTo($questions)
         $('<div id="questionsList">').appendTo($questions)
         questions.results.forEach(add_to_list)
         });
 }
 
-var $sorter = $('#sorter')
 
 $sort.change( function() {
     getQuestions()
