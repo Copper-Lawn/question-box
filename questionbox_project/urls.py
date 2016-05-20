@@ -17,5 +17,4 @@ urlpatterns = [
     url(r'^account/create/$', views.CreateAccountView.as_view(), name='create'),
     url(r'^account/profile/(?P<pk>[0-9]+)/$', views.ProfileView.as_view(), name='profile'),
     url(r'^admin/', include(admin.site.urls)),
-
 ]
