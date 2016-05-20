@@ -24,3 +24,8 @@ class Keyword(models.Model):
 
     def __unicode__(self):
         return self.keyword
+
+
+# class Owner(models.Model):
+#     user_score = models.IntegerField(default=0)
+#     user = models.OneToOneField(Users)
