@@ -9,7 +9,7 @@ class Question(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     views = models.IntegerField(default=0)
     answers = models.ForeignKey('Answer', on_delete=models.CASCADE, null=True)
-    keywords = models.ManyToManyField('Keyword', null=True, default="")
+    keywords = models.ManyToManyField('Keyword', default="")
 
 
 class Answer(models.Model):
