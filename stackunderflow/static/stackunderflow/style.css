@@ -37,14 +37,6 @@ body {
   cursor: default;
 }
 
-.questions ul {
-    list-style: none;
-}
-
-.questions p {
-     display: inline-block;
-}
-
 .sorting {
     margin-top: 10px;
 }
@@ -54,18 +46,31 @@ body {
     height: 25;
 }
 
+#mainContainer {
+
+}
+
 #questions {
+    display: inline-block;
     margin-top: 15px;
+}
+
+#createQuestion {
+    display: inline-block;
+    margin-top: 15px;
+}
+
+#questionForm {
+    
 }
 
 .summary {
     height: 85px;
-    width: 600px;
-    margin: 2;
+    width: 500px;
     background-color: #fff;
     padding: 2px;
     border-radius: 4px;
-    margin: 6px;
+    margin: 6px 20px 6px 6px;
 }
 
 .miniViews {

@@ -6,32 +6,58 @@
         <title>Home</title>
         <link rel="stylesheet" type="text/css" href="{% static 'stackunderflow/style.css' %}" />
     </head>
+
     <body id='home'>
 
-      <header>
-        <div class="nav">
-          <ul>
-            <li class="home"><a class="active" href="#">Home</a></li>
-            {% if is_authenticated %}
-            <li class="account"><a href="/account/profile/">Account</a></li>
-            {% else %}
-            <li class="login"><a href="/account/create">Register</a></li>
-            {% endif %}
-          </ul>
+        <header>
+            <div class="nav">
+                <ul>
+                    <li class="home"><a class="active" href="#">Home</a></li>
+                {% if is_authenticated %}
+                    <li class="account"><a href="/account/profile/">Account</a></li>
+                {% else %}
+                    <li class="login"><a href="/account/create">Register</a></li>
+                {% endif %}
+                </ul>
+            </div>
+        </header>
+
+        <div class="sorting">
+            <form id="sortForm" action="home/" method="get">
+                {% csrf_token %}
+                <select id="sortForm" name="sort">
+                    <option value="title">Title</option>
+                    <option value="created">Created</option>
+                    <option value="-views">Popular</option>
+                </select>
+                <noscript>
+                    <input type="submit" name="sort" value="Sort Questions" />
+                </noscript>
+            </form>
         </div>
-      </header>
 
-      <div class="sorting">
-        <select id="sort" name="sort">
-            <option value="title">Title</option>
-            <option value="created">Created</option>
-            <option value="-views">Popular</option>
-        </select>
-      </div>
+        <div id="mainContainer">
 
-      <div id="questions">
+            <div id="questions">
+                {% for question in questions %}
+                <div class="summary">
+                    <div class="miniViews">
+                        <div class="viewsCount">{{ question.views }}</div>
+                        <div class="viewsText">Views</div>
+                    </div>
+                    <div class='questionSummary'>
+                        <a href="/question/{{ question.id }}"> {{ question.title }}</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
 
-      </div>
+            <div id="createQuestion">
+                <form id="questionForm" action="index.html" method="post">
+
+                </form>
+            </div>
+        </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
         <script src="{% static "stackunderflow/moment.js" %}"></script>

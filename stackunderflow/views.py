@@ -11,6 +11,16 @@ from django.contrib.auth.models import User
 class HomeView(TemplateView):
     template_name = "stackunderflow/home.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['questions'] = Question.objects.all()
+        context['keywords'] = Keyword.objects.all()
+        return context
+
+    def get_queryset(self):
+        order_by = self.request.GET.get('sort', 'title')
+        return Question.objects.all().order_by(order_by)
+
 
 class QuestionsPageView(TemplateView):
     queryset = Question.objects.all()
@@ -34,7 +44,6 @@ class QuestionsPageView(TemplateView):
 
 class CreateAccountView(TemplateView):
     template_name = "stackunderflow/register.html"
-    # queryset = User.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

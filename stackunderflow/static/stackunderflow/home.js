@@ -4,11 +4,6 @@ var $questions = $('#questions')
 var question_list = $.get('/api/questions/')
 
 var add_to_list = function(question) {
-    var $summary = $("<div class=summary>");
-    $summary.appendTo($('#questionsList'));
-    var $miniViews = $('<div class=miniViews>').appendTo($summary);
-    $("<div class=viewsCount>").text(question.views).appendTo($miniViews);
-    $("<p class=viewsText>").text("Views").appendTo($miniViews);
     var questionLink = $('<a href=/question/' + question.id + '>' + question.title.slice(0, 50) + '</a>');
     var $questionSummary = $('<div class=questionSummary>').appendTo($summary);
     questionLink.appendTo($questionSummary)
