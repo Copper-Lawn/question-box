@@ -12,11 +12,11 @@
 
         <div class="nav">
           <ul>
-            <li class="home"><a class="active" href="#">Home</a></li>
+            <li class="home"><a href="/home/">Home</a></li>
             {% if is_authenticated %}
             <li class="account"><a href="/account/profile/">Account</a></li>
             {% else %}
-            <li class="login"><a href="#">Login/Register</a></li>
+            <li class="login"><a class="active" href="#">Register</a></li>
             {% endif %}
           </ul>
         </div>
