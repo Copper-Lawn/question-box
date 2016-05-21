@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <title>Home</title>
-        <link rel="stylesheet" type="text/css" href="/static/stackunderflow/style.css" />
+        <link rel="stylesheet" type="text/css" href="{% static 'stackunderflow/style.css' %}" />
     </head>
     <body id='home'>
 
@@ -15,7 +15,7 @@
             {% if is_authenticated %}
             <li class="account"><a href="/account/profile/">Account</a></li>
             {% else %}
-            <li class="login"><a href="/account/login">Login</a></li>
+            <li class="login"><a href="/account/create">Register</a></li>
             {% endif %}
           </ul>
         </div>
