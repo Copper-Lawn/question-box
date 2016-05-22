@@ -12,7 +12,7 @@
         <header>
             <div class="nav">
                 <div id='navContainer'>
-                    <div class="home"><a class="active" href="">Home</a></div>
+                    <div class="home"><a class='active' href="/home">Home</a></div>
                 {% if user.is_authenticated %}
                     <div class="logout"><a href="/account/logout">Logout</a></div>
                     <div class="profile"><a href="/account/profile/{{user.id}}">Profile</a></div>
@@ -22,7 +22,7 @@
                 </div>
 
                 {% else %}
-                    <div class="hello"><a href="/account/create">Welcome</a></li>
+                <div class="hello"><a href="/account/create">Welcome</a></li>
                 {% endif %}
             </div>
             </div>

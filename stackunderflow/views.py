@@ -86,7 +86,7 @@ def create_account(request):
             user = form.save()
             owner = Owner(user=user)
             owner.save()
-            return redirect('/login')
+            return redirect('/account/profile/{}/'.format(request.user.user_id))
         else:
             print(form.errors)
     else:

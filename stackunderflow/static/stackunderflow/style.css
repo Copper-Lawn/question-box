@@ -332,3 +332,21 @@ body {
     color: #ccc;
     background-color: #444;
 }
+
+#form_header{
+  text-align: center;
+}
+
+/*#div_user_form {
+  border: 10px;
+  border-style: double;
+  padding-left: 500px;
+}*/
+
+#register_form {
+  border: 10px;
+  border-style: double;
+  padding-left: 500px;
+  width: auto;
+
+}

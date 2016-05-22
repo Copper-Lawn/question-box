@@ -7,68 +7,38 @@
         <link rel="stylesheet" type="text/css" href="{% static 'stackunderflow/style.css' %}" />
     </head>
 
-    <body>
-      <header>
+    <body id='home'>
 
-        <div class="nav">
-          <ul>
-            <li class="home"><a href="/home/">Home</a></li>
-            {% if is_authenticated %}
-            <li class="account"><a href="/account/profile/">Account</a></li>
-            {% else %}
-            <li class="login"><a class="active" href="#">Register</a></li>
-            {% endif %}
-          </ul>
-        </div>
-
-      </header>
-
-        <h1>Login</h1>
-
-      <div id="div_user_login">
-        <form id="user_login" action="" method="post">
-
-          <label for="username">Username</label>
-          <input type="text" name="username" value="">
-          </br>
-          </br>
-
-          <label for="password">Password</label>
-          <input type="text" name="password" value="">
-          </br>
-          </br>
-
-        </form>
-
-      </div>
-
-        <h1>Create New Account</h1>
+              <header>
+                  <div class="nav">
+                      <div id='navContainer'>
+                        <div class="home"><a class='active' href="/home">Home</a></div>
+                      {% if user.is_authenticated %}
+                          <div class="logout"><a href="/account/logout">Logout</a></div>
+                          <div class="profile"><a href="/account/profile/{{user.id}}">Profile</a></div>
+                          <div class="hello">Hello, {{ user.username }}!</div>
 
 
+                      </div>
 
-      <div id="div_user_form">
-        <form id="user_form" method="post" action="">
-          {% csrf_token %}
-          {{ form.as_p }}
-<!-- 
-          <label for="username">Username</label>
-          <input type="text" name="username" value="">
-          </br>
-          </br>
+                      {% else %}
+                      {% endif %}
+                  </div>
+                  </div>
+              </header>
 
-          <label for="password">Password</label>
-          <input type="text" name="password" value="">
-          </br>
-          </br>
+        <!-- <h1>Create New Account</h1> -->
 
-          <label for="email">Email</label>
-          <input type="text" name="email" value="">
-          </br>
-          </br> -->
+          <div id="div_user_form">
+            <h1 id="form_header">Create New Account</h1>
+            <form id="register_form" method="post" action="">
+              {% csrf_token %}
+              {{ form.as_p }}
 
-            <input type="submit" name="submit" value="Register" />
-        </form>
-      </div>
+                <input type="submit" name="submit" value="Register" />
+            </form>
+          </div>
+
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
         <script src="/static/register.js"></script>
