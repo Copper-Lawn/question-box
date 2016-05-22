@@ -12,12 +12,17 @@
         <header>
             <div class="nav">
                 <div id='navContainer'>
-                    <div class="home"><a class="active" href="#">Home</a></div>
+                    <div class="home"><a class="active" href="">Home</a></div>
                 {% if user.is_authenticated %}
-                    <div class="account"><a href="/account/profile/{{user.id}}">Hello, {{ user.username }}!</a></div>
+                    <div class="logout"><a href="/account/logout">Logout</a></div>
+                    <div class="profile"><a href="/account/profile/{{user.id}}">Profile</a></div>
+                    <div class="hello">Hello, {{ user.username }}!</div>
+
+
+                </div>
 
                 {% else %}
-                    <li class="login"><a href="/account/create">Register</a></li>
+                    <div class="hello"><a href="/account/create">Welcome</a></li>
                 {% endif %}
             </div>
             </div>
@@ -44,21 +49,24 @@
 
                     <div id="questions">
                         {% for question in questions %}
-                        <a href="/question/{{ question.id }}">
-                            <div class="summary">
-                                <div class="info">
-                                    <div class="miniViews">
-                                        <div class="viewsCount">{{ question.views }}</div>
-                                        <div class="viewsText">Views</div>
-                                    </div>
-                                    <div class='questionSummary'>
-                                        <div class='intro'>
-                                            <b>{{question.creator}}</b> asked about
-                                        </div>
-                                        <div class='questionTitle'><b>{{question.title}}</b></div>
-                                        <div class='questionText'>>>{{question.text|slice:":100"}} ...</div>
-                                    </div>
+                        <div class="summary">
+                            <div class="info">
+                                <div class="miniViews">
+                                    <div class="viewsCount">{{ question.views }}</div>
+                                    <div class="viewsText">Views</div>
                                 </div>
+                                <div class='questionSummary'>
+                                    <div class='intro'>
+                                        <b><a href="/account/profile/{{question.creator.id}}">{{question.creator}}</a></b> asked about
+                                    </div>
+                                    <a href="/question/{{ question.id }}">
+
+                                    <div class='questionTitle'><b>{{question.title}}</b></div>
+                                    <div class='questionText'>>>{{question.text|slice:":100"}} ...</div>
+                                </a>
+                                </div>
+                            </div>
+                            <div class="extraInfo">
                                 <div class="keywords">
                                     {% for word in question.keywords.all %}
                                     <div class="keywordItem">
@@ -68,7 +76,7 @@
                                 </div>
                                 <div class='postDate'>{{question.created}}</div>
                             </div>
-                        </a>
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
@@ -114,16 +122,21 @@
                             </form>
 
                         {% else %}
+                        <div class="welcome">
+                            <p>Welcome! You aren't currently signed in, so you can't ask any questions. Feel free to look around, but when you feel like jumping in the login is just below.</p>
+                            <p>Not a member yet? Follow <a href="/account/create">this link to register!</a></p>
+                        </div>
 
                         <div id="loginForm">
                             <form class="login" action="." method="post">
+                                {% csrf_token %}
                                 <div class="loginFormInput">
                                     <label for="">Username:</label>
                                     <input type="text" name="username" value="">
                                 </div>
                                 <div class="loginFormInput">
                                     <label for="">Password:</label>
-                                    <input type="text" name="password" value="">
+                                    <input type="password" name="password" value="">
                                 </div>
                                 <input type="submit" class="loginFormInput" value="Login">
                             </form>

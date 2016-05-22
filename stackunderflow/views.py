@@ -1,8 +1,9 @@
 from rest_framework import viewsets, permissions, renderers
 from django.views.generic.base import TemplateView
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
-from .models import Question, Answer, Keyword
+from django.contrib.auth import login, logout, authenticate
+from django.shortcuts import redirect
+from .models import Question, Answer, Keyword, Owner
 from .serializers import QuestionSerializer, AnswerSerializer, KeywordSerializer
 from .forms import QuestionForm
 
@@ -31,15 +32,24 @@ class HomeView(TemplateView):
             question.creator = request.user
             question.creator.owner.score += 5
             question.save()
-            print('\n\n------------\n\n')
-            print(request.POST.getlist('keywords'))
-            print('\n\n------------\n\n')
+            question.creator.owner.save()
             for word in request.POST.getlist('keywords'):
                 key = Keyword.objects.get(keyword=word)
                 question.keywords.add(key)
             question.save()
 
             return redirect('/question/' + str(question.id))
+
+        else:
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('/home/')
+            else:
+                return redirect('/home/')
+
 
 
 class QuestionsPageView(TemplateView):
@@ -74,6 +84,10 @@ class CreateAccountView(TemplateView):
 class ProfileView(TemplateView):
     template_name = "stackunderflow/profile.html"
 
+
+def log_out(request):
+    logout(request)
+    return redirect("/home/")
 
 """ API Endpoint views """
 

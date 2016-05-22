@@ -84,6 +84,7 @@ body {
 }
 
 #userGroup {
+    position: fixed;
     display: inline-block;
     vertical-align: top;
     background-color: #ccc;
@@ -164,8 +165,8 @@ body {
 }
 
 .summary {
-    height: 150px;
-    width: 575px;
+    height: 160px;
+    width: 675px;
     background-color: #fff;
     border-radius: 4px;
     margin: 6px 20px 10px 6px;
@@ -195,6 +196,10 @@ body {
     margin-top: 5px;
 }
 
+.intro {
+    display: block;
+}
+
 .questionText {
     max-width: 450px;
 }
@@ -210,9 +215,17 @@ body {
     font-size: 18px;
 }
 
+.extraInfo {
+    height: 60px;
+    margin-bottom: 5px;
+}
+
 .keywords {
-    height: 20px;
-    padding: 8px;
+    vertical-align: baseline;
+    height: 40px;
+    width: 500px;
+    margin-top: 2px;
+    padding: 0 8px 0 8px;
 }
 
 .keywordItem {
@@ -220,14 +233,16 @@ body {
     background-color: #00afaf;
     padding: 4px;
     border-radius: 4px;
-    margin-right: 6px;
+    margin-bottom: 4px;
+    margin-right: 4px;
     font-size: 17px;
 }
 
 .postDate {
-    display: block;
+    display: inline-block;
     float: right;
     margin-right: 6px;
+    padding-bottom: 3px;
 }
 
 @media screen and (min-width: 600px) {
@@ -263,7 +278,9 @@ body {
 
 }
 
-.account {
+.hello {
+    position: absolute;
+    left: 775px;
     float: right;
     width: auto;
     border-bottom: none;
@@ -272,11 +289,10 @@ body {
     font-size: 1.4em;
     color: black;
     background-color: #ccc;
-    margin-right: 475px;
     padding: 0 25px 0 25px;
 }
 
-.account a {
+.hello a {
     color: black;
 }
 
@@ -289,4 +305,30 @@ body {
     font-size: 1.4em;
     background-color: #fff;
     padding: 0 25px 0 25px;
+}
+
+.profile {
+    position: absolute;
+    left: 975px;
+    float: right;
+    width: auto;
+    border-bottom: none;
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.4em;
+    color: #ccc;
+    background-color: #444;
+}
+
+.logout {
+    position: absolute;
+    left: 1075px;
+    float: right;
+    width: auto;
+    border-bottom: none;
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.4em;
+    color: #ccc;
+    background-color: #444;
 }

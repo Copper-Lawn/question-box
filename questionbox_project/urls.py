@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^home/$', views.HomeView.as_view(), name='home'),
     url(r'^account/create/$', views.CreateAccountView.as_view(), name='create_account'),
+    url(r'^account/logout/$', views.log_out, name='logout'),
     url(r'^question/(?P<pk>[0-9]+)/$', views.QuestionsPageView.as_view(), name='question_view'),
     url(r'^account/profile/(?P<pk>[0-9]+)/$', views.ProfileView.as_view()),
     url(r'^admin/', include(admin.site.urls)),
