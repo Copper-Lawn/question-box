@@ -1,8 +1,10 @@
 from rest_framework import viewsets, permissions, renderers
-from .models import Question, Answer, Keyword
-from .serializers import QuestionSerializer, AnswerSerializer, KeywordSerializer
 from django.views.generic.base import TemplateView
 from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
+from .models import Question, Answer, Keyword
+from .serializers import QuestionSerializer, AnswerSerializer, KeywordSerializer
+from .forms import QuestionForm
 
 
 """ User views """
@@ -15,11 +17,29 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['questions'] = Question.objects.all()
         context['keywords'] = Keyword.objects.all()
+        context['form'] = QuestionForm()
         return context
 
     def get_queryset(self):
         order_by = self.request.GET.get('sort', 'title')
         return Question.objects.all().order_by(order_by)
+
+    def post(self, request):
+        if request.user.is_authenticated():
+            form = QuestionForm(request.POST)
+            question = form.save(commit=False)
+            question.creator = request.user
+            question.creator.owner.score += 5
+            question.save()
+            print('\n\n------------\n\n')
+            print(request.POST.getlist('keywords'))
+            print('\n\n------------\n\n')
+            for word in request.POST.getlist('keywords'):
+                key = Keyword.objects.get(keyword=word)
+                question.keywords.add(key)
+            question.save()
+
+            return redirect('/question/' + str(question.id))
 
 
 class QuestionsPageView(TemplateView):

@@ -11,51 +11,128 @@
 
         <header>
             <div class="nav">
-                <ul>
-                    <li class="home"><a class="active" href="#">Home</a></li>
-                {% if is_authenticated %}
-                    <li class="account"><a href="/account/profile/">Account</a></li>
+                <div id='navContainer'>
+                    <div class="home"><a class="active" href="#">Home</a></div>
+                {% if user.is_authenticated %}
+                    <div class="account"><a href="/account/profile/{{user.id}}">Hello, {{ user.username }}!</a></div>
+
                 {% else %}
                     <li class="login"><a href="/account/create">Register</a></li>
                 {% endif %}
-                </ul>
+            </div>
             </div>
         </header>
 
-        <div class="sorting">
-            <form id="sortForm" action="home/" method="get">
-                {% csrf_token %}
-                <select id="sortForm" name="sort">
-                    <option value="title">Title</option>
-                    <option value="created">Created</option>
-                    <option value="-views">Popular</option>
-                </select>
-                <noscript>
-                    <input type="submit" name="sort" value="Sort Questions" />
-                </noscript>
-            </form>
-        </div>
-
         <div id="mainContainer">
-
-            <div id="questions">
-                {% for question in questions %}
-                <div class="summary">
-                    <div class="miniViews">
-                        <div class="viewsCount">{{ question.views }}</div>
-                        <div class="viewsText">Views</div>
+            <div id="questionGroup">
+                <div id="questionPane">
+                    <div class="sorting">
+                        <div class="questionTitle"><u><font size=7>Questions List</font></u></div>
+                        <form id="sortForm" action="home/" method="get">
+                            {% csrf_token %}
+                            <label for=""><font size=5>Sort by:</font></label>
+                            <select id="sortForm" name="sort">
+                                <option value="title">Title</option>
+                                <option value="created">Created</option>
+                                <option value="-views">Popular</option>
+                            </select>
+                            <noscript>
+                                <input type="submit" name="sort" value="Sort Questions" />
+                            </noscript>
+                        </form>
                     </div>
-                    <div class='questionSummary'>
-                        <a href="/question/{{ question.id }}"> {{ question.title }}</a>
+
+                    <div id="questions">
+                        {% for question in questions %}
+                        <a href="/question/{{ question.id }}">
+                            <div class="summary">
+                                <div class="info">
+                                    <div class="miniViews">
+                                        <div class="viewsCount">{{ question.views }}</div>
+                                        <div class="viewsText">Views</div>
+                                    </div>
+                                    <div class='questionSummary'>
+                                        <div class='intro'>
+                                            <b>{{question.creator}}</b> asked about
+                                        </div>
+                                        <div class='questionTitle'><b>{{question.title}}</b></div>
+                                        <div class='questionText'>>>{{question.text|slice:":100"}} ...</div>
+                                    </div>
+                                </div>
+                                <div class="keywords">
+                                    {% for word in question.keywords.all %}
+                                    <div class="keywordItem">
+                                        {{ word.keyword }}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div class='postDate'>{{question.created}}</div>
+                            </div>
+                        </a>
+                        {% endfor %}
                     </div>
                 </div>
-                {% endfor %}
             </div>
 
-            <div id="createQuestion">
-                <form id="questionForm" action="index.html" method="post">
+            <div id='userGroup'>
+                <div id="userPane">
+                    <div class="innerUser">
 
-                </form>
+                    {% if user.is_authenticated %}
+
+                        <div class="welcome">
+                            <p>Welcome back! You currently have <b>{{ user.owner.score }} points</b>. Asking and answering questions earns you more points, so get to it!
+                        </div>
+
+                        <div id="createQuestion">
+                            <form id="questionForm" action="." method="post">
+                            {% csrf_token %}
+                                <legend>
+                                    <font size=7><u>Submit a new question</u></font>
+                                </legend>
+                                <div class="formInput">
+                                    <label for="">Title:</label>
+                                    <br>
+                                    <input id='questionTitle' type="text" name="title" value="" required=True maxlength="50">
+                                </div>
+                                <div class="formInput">
+                                    <label for="">Question:</label>
+                                    <br>
+                                    <textarea id='questionFormText' form='questionForm' name="text" cols="100" rows=20 required=True></textarea>
+                                </div>
+                                <div class="formInput">
+                                    <label for="">Keywords:</label>
+                                    <br>
+                                    {% for word in form.keywords %}
+                                            {{ word }}&nbsp;&nbsp;
+                                        {% if forloop.counter == 5 or forloop.counter == 10 %}
+                                            <br>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <input class="submit" type="submit" value="Submit">
+                            </form>
+
+                        {% else %}
+
+                        <div id="loginForm">
+                            <form class="login" action="." method="post">
+                                <div class="loginFormInput">
+                                    <label for="">Username:</label>
+                                    <input type="text" name="username" value="">
+                                </div>
+                                <div class="loginFormInput">
+                                    <label for="">Password:</label>
+                                    <input type="text" name="password" value="">
+                                </div>
+                                <input type="submit" class="loginFormInput" value="Login">
+                            </form>
+                        </div>
+                        {% endif %}
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -4,6 +4,10 @@ body {
   background: #ccc;
 }
 
+.nav {
+    background-color: #ccc;
+}
+
 .nav ul {
   list-style: none;
   background-color: #444;
@@ -37,46 +41,145 @@ body {
   cursor: default;
 }
 
-.sorting {
-    margin-top: 10px;
-}
-
-#sort {
-    width: 75;
-    height: 25;
-}
-
 #mainContainer {
+    background: #444;
+}
 
+.sorting {
+    margin: 10px 0 0 15px;
+}
+
+.questionGroup {
+    display: inline-block;
+}
+
+.questionTitle {
+    display: inline-block;
+    margin: 0 50px 0 0;
+}
+
+#sortForm {
+    display: inline-block;
+}
+
+#questionGroup {
+    display: inline-block;
+    vertical-align: top;
+    background-color: #fff;
+    border-radius: 4px;
+    width: 700px;
+    padding: 6px;
+}
+
+#questionPane {
+    background-color: #ccc;
+    border-radius: 4px;
+    margin: 10px 6px 6px 0;
 }
 
 #questions {
     display: inline-block;
-    margin-top: 15px;
+    vertical-align: top;
+    margin-right: 25px;
+}
+
+#userGroup {
+    display: inline-block;
+    vertical-align: top;
+    background-color: #ccc;
+    border-radius: 4px;
+    width: 600px;
+    padding: 6px;
+    margin-left: 10px;
+}
+
+#userPane {
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.innerUser {
+    border-radius: 4px;
+    background-color: #fff;
+    padding: 6px;
+}
+
+.welcome p {
+    font-size: 20px;
+    word-wrap: normal;
 }
 
 #createQuestion {
     display: inline-block;
-    margin-top: 15px;
+    vertical-align: top;
+    width: 575px;
+    background-color: #ccc;
+    border-radius: 4px;
+    padding: 6px;
 }
 
-#questionForm {
-    
+#loginForm {
+    display: inline-block;
+    vertical-align: top;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 6px;
+    margin-top: 25px;
+}
+
+.loginFormInput {
+    display: inline-block;
+    background-color: #ccc;
+    border-radius: 4px;
+    padding: 7px;
+}
+
+.formInput {
+    background-color: #ccc;
+    border-radius: 4px;
+    padding: 7px;
+}
+
+#questionTitle {
+    width: 400px;
+    height: 25px;
+    font-size: 17px;
+}
+
+#questionFormText {
+    max-width: 450px;
+}
+
+.submit {
+    font-size: 18px;
+  line-height: 18px;
+  float: left;
+  border: 1;
+  border-radius: 8px;
+  background-color: #fff;
+  display: block;
+  margin: 0;
+  height: 30px;
+  width: 80px;
 }
 
 .summary {
-    height: 85px;
-    width: 500px;
+    height: 150px;
+    width: 575px;
     background-color: #fff;
-    padding: 2px;
     border-radius: 4px;
-    margin: 6px 20px 6px 6px;
+    margin: 6px 20px 10px 6px;
+}
+
+#questions a {
+    text-decoration: none;
 }
 
 .miniViews {
     display: inline-block;
+    vertical-align: top;
     text-align: center;
-    background-color: #dddddd;
+    background-color: #ccc;
     border-radius: 5px;
     height: 50px;
     min-width: 30px;
@@ -93,7 +196,7 @@ body {
 }
 
 .questionText {
-    margin-bottom: 3px;
+    max-width: 450px;
 }
 
 .viewsText {
@@ -107,18 +210,29 @@ body {
     font-size: 18px;
 }
 
-.keyword {
+.keywords {
+    height: 20px;
+    padding: 8px;
+}
+
+.keywordItem {
     display: inline-block;
-    background-color: #009f9f;
+    background-color: #00afaf;
     padding: 4px;
     border-radius: 4px;
     margin-right: 6px;
-    font-size: 14px;
+    font-size: 17px;
+}
+
+.postDate {
+    display: block;
+    float: right;
+    margin-right: 6px;
 }
 
 @media screen and (min-width: 600px) {
   .nav li {
-    width: 120px;
+    width: auto;
     border-bottom: none;
     height: 50px;
     line-height: 50px;
@@ -135,13 +249,44 @@ body {
   .nav li {
     float: left;
   }
-  .nav ul {
+
+  #navContainer {
     overflow: auto;
-    width: 600px;
+    width: 100%;
     margin: 0 auto;
+    padding-left: 60px;
   }
+
   .nav {
     background-color: #444;
   }
 
+}
+
+.account {
+    float: right;
+    width: auto;
+    border-bottom: none;
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.4em;
+    color: black;
+    background-color: #ccc;
+    margin-right: 475px;
+    padding: 0 25px 0 25px;
+}
+
+.account a {
+    color: black;
+}
+
+.home {
+    float: left;
+    width: auto;
+    border-bottom: none;
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.4em;
+    background-color: #fff;
+    padding: 0 25px 0 25px;
 }
