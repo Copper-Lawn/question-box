@@ -42,22 +42,15 @@
 
       </div>
 
-      <script>
-        var users_list = [
-          {% for user in users_list %}
-          {name: '{{ user.username }}' }
-          {% endfor %}
-        ];
-      </script>
-
         <h1>Create New Account</h1>
 
 
 
       <div id="div_user_form">
         <form id="user_form" method="post" action="">
-          <!-- <legend>Create New Profile</legend> -->
-
+          {% csrf_token %}
+          {{ form.as_p }}
+<!-- 
           <label for="username">Username</label>
           <input type="text" name="username" value="">
           </br>
@@ -71,12 +64,8 @@
           <label for="email">Email</label>
           <input type="text" name="email" value="">
           </br>
-          </br>
+          </br> -->
 
-
-            <!-- {{ user_form.as_p }} -->
-
-            <!-- Provide a button to click to submit the form. -->
             <input type="submit" name="submit" value="Register" />
         </form>
       </div>

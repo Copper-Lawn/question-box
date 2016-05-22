@@ -1,8 +1,9 @@
 from rest_framework import viewsets, permissions, renderers
 from django.views.generic.base import TemplateView
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from .models import Question, Answer, Keyword
+from .models import Question, Answer, Keyword, Owner
 from .serializers import QuestionSerializer, AnswerSerializer, KeywordSerializer
 from .forms import QuestionForm
 
@@ -62,13 +63,27 @@ class QuestionsPageView(TemplateView):
         return context
 
 
-class CreateAccountView(TemplateView):
-    template_name = "stackunderflow/register.html"
+# class CreateAccountView(TemplateView):
+#     template_name = "stackunderflow/register.html"
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['users_list'] = User.objects.all()
+#         return context
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['users_list'] = User.objects.all()
-        return context
+def create_account(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            owner = Owner(user=user)
+            owner.save()
+            return HttpResponseRedirect('/login')
+        else:
+            print(form.errors)
+    else:
+        form = UserCreationForm()
+    return render(request, 'stackunderflow/register.html', context={'form': form})
 
 
 class ProfileView(TemplateView):
