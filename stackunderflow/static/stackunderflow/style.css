@@ -84,7 +84,7 @@ body {
 }
 
 #userGroup {
-    position: fixed;
+    /*position: fixed;*/
     display: inline-block;
     vertical-align: top;
     background-color: #ccc;
