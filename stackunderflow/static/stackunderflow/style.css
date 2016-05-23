@@ -309,7 +309,7 @@ body {
 
 .profile {
     position: absolute;
-    left: 975px;
+    left: 1075px;
     float: right;
     width: auto;
     border-bottom: none;
@@ -322,7 +322,7 @@ body {
 
 .logout {
     position: absolute;
-    left: 1075px;
+    left: 1175px;
     float: right;
     width: auto;
     border-bottom: none;
