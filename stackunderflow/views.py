@@ -50,6 +50,13 @@ class HomeView(TemplateView):
             else:
                 return redirect('/home/')
 
+    def get(self, request):
+        context = self.get_context_data()
+        if request.GET.get('sort'):
+            order = request.GET.get('sort')
+            context['questions'] = Question.objects.all().order_by(order)
+        return render(request, 'stackunderflow/home.html', context)
+
 
 class QuestionsPageView(TemplateView):
     queryset = Question.objects.all()

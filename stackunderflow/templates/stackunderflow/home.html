@@ -33,17 +33,14 @@
                 <div id="questionPane">
                     <div class="sorting">
                         <div class="questionTitle"><u><font size=7>Questions List</font></u></div>
-                        <form id="sortForm" action="home/" method="get">
-                            {% csrf_token %}
+                        <form id="sortForm" action="" method="get">
                             <label for=""><font size=5>Sort by:</font></label>
                             <select id="sortForm" name="sort">
                                 <option value="title">Title</option>
                                 <option value="created">Created</option>
                                 <option value="-views">Popular</option>
                             </select>
-                            <noscript>
-                                <input type="submit" name="sort" value="Sort Questions" />
-                            </noscript>
+                                <input type="submit" name="" value="Sort" />
                         </form>
                     </div>
 
@@ -132,11 +129,11 @@
                                 {% csrf_token %}
                                 <div class="loginFormInput">
                                     <label for="">Username:</label>
-                                    <input type="text" name="username" value="">
+                                    <input type="text" name="username" value="" required=True>
                                 </div>
                                 <div class="loginFormInput">
                                     <label for="">Password:</label>
-                                    <input type="password" name="password" value="">
+                                    <input type="password" name="password" value="" required=True>
                                 </div>
                                 <input type="submit" class="loginFormInput" value="Login">
                             </form>

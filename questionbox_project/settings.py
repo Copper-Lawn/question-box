@@ -22,7 +22,7 @@ INSTALLED_APPS = (
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
-    'PAGE_SIZE': 25
+    'PAGE_SIZE': 10
 }
 
 # SECURITY WARNING: keep the secret key used in production secret!
