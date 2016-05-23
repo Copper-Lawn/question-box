@@ -8,7 +8,6 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 DEBUG = True
 # Application definition
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project_name.settings.local")
 
 INSTALLED_APPS = (
     'stackunderflow.apps.StackunderflowConfig',
@@ -62,7 +61,6 @@ TEMPLATES = (
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'debug': DEBUG,
         },
     },
 )
